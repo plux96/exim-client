@@ -1,11 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import Button from '@mui/material/Button';
+
 import EIMZO from "./../e-imzo/Eimzo";
 
 // import { Button } from '@mui/material';
@@ -21,7 +16,8 @@ export default function AuthPage() {
         key: false,
         privacyAgree: false
     });
-    const [certificates, setCertificates] = useState(null);
+    const [certificates, setCertificates] = useState([]);
+    const [selectedCert, setSelectedCert] = useState({})
     const [keyId, setKeyId] = useState(null);
     const [pkcsInfo, setPkcsInfo] = useState("");
     const [resultPkcs, setResultPkcs] = useState({});
@@ -31,6 +27,11 @@ export default function AuthPage() {
         authUser[stateVal] = newStateVal;
         setAuthUser(authUser);
     }
+
+    const handleSelectChange = (e) => {
+      console.log(e.target.value)
+      setSelectedCert(e.target.value)
+    } 
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -44,20 +45,20 @@ export default function AuthPage() {
 
   const reqGuid = async () => {
     const backendGuid = await axios.get(
-      `http://localhost:8080/?key=${keyId.id}`
+      `http://localhost:8000/api/v1/user`
     );
-    console.log(backendGuid, "sdvdvdvd------vedvdv-");
     return backendGuid;
   };
 
+
   const getData = () => {
     const getKeyData = async () => {
-      const keyData = await EIMZOClient.loadKey(certificates[0]);
+      const keyData = await EIMZOClient.loadKey(certificates[selectedCert]);
       console.log(keyData);
       setKeyId(keyData);
       console.log(keyData);
     };
-    if (certificates) {
+    if (selectedCert) {
       getKeyData();
     }
   };
@@ -76,9 +77,11 @@ export default function AuthPage() {
 
   useEffect(() => {
     const verifyPkcs = async () => {
-      const info = await axios.post("http://localhost:8080/pkcs7", {
+      const info = await axios.post("http://localhost:8000/api/v1/user", {
         pkcs: pkcsInfo,
         infoCert: keyId,
+      },{
+        withCredentials:true
       });
       console.log(info);
       setResultPkcs(info);
@@ -102,35 +105,24 @@ export default function AuthPage() {
                     </div>
                     <div className='form-container__body'>
                         <h3>Вход с помощъю ЭЦП</h3>
-                        <Box sx={{ minWidth: 120 }}>
-                            <FormControl fullWidth>
-                                <InputLabel id="demo-simple-select-label">Age</InputLabel>
-                            <Select
-                             labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                 value=""
-                                 label="Age"
-                                 onChange=""
-                             >
-                            <MenuItem value={10}>Ten</MenuItem>
-                            <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem>
-                            </Select>
-                            </FormControl>
-                        </Box>
+                       <select defaultValue="s" required onChange={handleSelectChange} value={certificates && certificates[selectedCert]}>
+                       <option disabled hidden value="s">Select certificate</option>
+                        {certificates ? (certificates.map((value, index) => {
+                          return  <option key={index} value={index}>{value.CN}</option>
+                        })): ""}
+                       </select>
                     </div>
                     <div className='auth__type'>
-                        <Choice  
+                        {/* <Choice  
                             text={'I agree that you can eat my Brosers Cookies'}
                             optionChange={{
                                 change: handleOptionChange,
                                 stateVal: 'privacyAgree'
                             }}
-                        />
-                        {/* <p>Другой метод входа</p>
-                        <Button className='app-button padding-height'>Зарегистрироватъся</Button> */}
+                        /> */}
+                       
                     </div>
-                    <Button onClick={getData} variant="contained">Enter system</Button>
+                    <button onClick={() => getData()} variant="contained">Enter system</button>
                 </div>
             </div>
         </div>

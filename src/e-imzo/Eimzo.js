@@ -1,6 +1,8 @@
 import { EIMZOClient as client } from "./e-imzo-client";
 
-const CAPIWS = window.CAPIWS;
+const CAPIWS =  async () => {
+  return await window.CAPIWS;
+};
 
 /**
  * @typedef Cert
