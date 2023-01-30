@@ -1,0 +1,125 @@
+.home {
+    // background-color: lightcyan;
+    height: 100vh;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    background-color: #f1f5f9;
+
+    &__section {
+        overflow-y: scroll;
+        overflow-x: hidden;
+        margin-top: 9rem;
+        height: 82vh;
+
+        &--intro {
+            background-image: url(../../../public/assets/pictures/SectionIntro.png);
+            height: 555px;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: 100%;
+            position: relative;
+
+            & .section__intro {
+                position: absolute;
+                top: 150px;
+                width: 550px;
+                left: 60px;
+
+                & h3 {
+                    color: $white;
+                    font-size: 32px;
+                    font-weight: 700;
+                }
+
+                p {
+                    margin-top: .7rem;
+                    color: $white;
+                    font-size: $juniorSize;
+                }
+
+                &--details {
+                    margin-top: 1.2rem;
+
+                    button {
+                        @include transition3s(background);
+                        height: 45px;
+                        background-color: $white;
+                        font-size: $normalSize !important;
+                        text-transform: initial;
+                        width: 200px;
+                        color: $color-blue;
+                        border-radius: $borderRadius;
+                        &:hover { background-color: rgba($color: $white, $alpha: .9); }
+                        &:active { background-color: rgba($color: $white, $alpha: 1); }
+
+                        &.outline {
+                            border: 1px solid $white;
+                            background-color: transparent;
+                            color: $white;
+                            &:hover { background-color: rgba($color: $white, $alpha: .2); }
+                            &:active { background-color: rgba($color: $white, $alpha: .3); }
+                        }
+
+                        &:not(:last-child) {
+                            margin-right: 1rem;
+                        }
+                    }
+                }
+            }
+        }
+
+        &--partners {
+            background-color: #E8ECF0;
+            height: 185px;
+            margin-top: 5rem;
+            padding-top: 1.5rem;
+
+            & h3 {
+                font-size: 24px;
+                font-weight: 500;
+                text-align: center;
+            }
+
+            & .partners {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 750px;
+                margin: 0 auto;
+                margin-top: 1.5rem;
+
+                &--logo {
+                    background-color: $white;
+                    width: 240px;
+                    height: 80px;
+                    position: relative;
+                    border-radius: $borderRadius;
+
+                    &::before {
+                        width: 180px;
+                        display: flex;
+                        height: 55px;
+                        content: "";
+                        position: absolute;
+                        background-repeat: no-repeat;
+                        background-position: 100%;
+                        background-size: contain;
+                        top: 50%;
+                        left: 50%;
+                        transform: translateX(-50%) translateY(-50%);
+                    }
+
+                    &.one::before { background-image: url(../../../public/assets/pictures/AsyKudaLogo.svg); }
+                    &.two::before { background-image: url(../../../public/assets/pictures/USACBP.svg); }
+                    &.three {
+                        background-color: #008bd4;
+                        &::before { 
+                            background-image: url(../../../public/assets/pictures/CupiaLogoWhite.png); 
+                            width: 110px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
